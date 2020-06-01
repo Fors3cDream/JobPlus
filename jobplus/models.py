@@ -137,7 +137,7 @@ class Job(Base):
 	name = db.Column(db.String(24))
 	salary_low = db.Column(db.Integer, nullable=False)
 	salary_high = db.Column(db.Integer, nullable=False)
-	location = db.Colun(db.String(24))
+	location = db.Column(db.String(24))
 	tags = db.Column(db.String(128))
 	experience_requirement = db.Column(db.String(32))
 	degree_requirement = db.Column(db.String(32))

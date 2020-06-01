@@ -1,13 +1,13 @@
 from flask import Flask, render_template
 from flask_migrate import Migrate
-from flask_login import LoginManger
+from flask_login import LoginManager
 from jobplus.config import configs
 from jobplus.models import db, User
 
 def register_extensions(app):
 	db.init_app(app)
 	Migrate(app, db)
-	login_manager = LoginManger()
+	login_manager = LoginManager()
 	login_manager.init_app(app)
 
 	@login_manager.user_loader
@@ -19,7 +19,7 @@ def register_extensions(app):
 def register_blueprints(app):
 	from .handlers import blueprints
 	for bp in blueprints:
-		app.register_blueprints(bp)
+		app.register_blueprint(bp)
 
 
 def register_error_handlers(app):
