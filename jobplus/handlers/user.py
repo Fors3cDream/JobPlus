@@ -1,3 +1,15 @@
-from flask import Blueprint
+from flask import Blueprint, render_template, flash, redirect, url_for
+from flask_login import login_required, current_user
+from jobplus.forms import UserProfileForm
 
-user = Blueprint('user', __name__, url_prefix='/users')
+user = Blueprint('user', __name__, url_prefix='/user')
+
+@user.route('/profile', methods=['GET', 'POST'])
+@login_required
+def profile():
+	form = UserProfileForm()
+	if form.validate_on_submit():
+		form.updated_profile(current_user)
+		flash('Update user profile success!', category='success')
+		return redirect(url_for('user.profile'))
+	return render_template('user/profile.html', form=form)

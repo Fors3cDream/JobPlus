@@ -26,7 +26,8 @@ class User(Base, UserMixin):
 
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(32), unique=True, index=True, nullable=False)
-	email = db.Column('password', db.String(256), nullable=False)
+	email = db.Column(db.String(64), unique=True, index=True, nullable=False)
+	_password = db.Column('password', db.String(256), nullable=False)
 	role = db.Column(db.SmallInteger, default=ROLE_USER)
 	resume = db.relationship('Resume', uselist=False)
 	collect_jobs = db.relationship('Job', secondary=user_job)
