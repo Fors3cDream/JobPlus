@@ -32,4 +32,4 @@ def profile():
         form.updated_profile(current_user)
         flash('企业信息更新成功', 'success')
         return redirect(url_for('front.index'))
-return render_template('company/profile.html', form=form)
+    return render_template('company/profile.html', form=form)

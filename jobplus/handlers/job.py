@@ -9,5 +9,6 @@ def index():
 	pagination = Job.query.order_by(Job.created_at.desc()).paginate(
 		page=page,
 		per_page=current_app.config['INDEX_PER_PAGE'],
-		err_out=False
+		error_out=False
 	)
+	return render_template('job/index.html', pagination=pagination, active='job')
