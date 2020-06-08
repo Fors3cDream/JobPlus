@@ -40,7 +40,7 @@ def userregister():
     return render_template('userregister.html', form=form)
 
 
-@front.route('/companyregister', methods=['GET', 'POST'])
+@front.route('companyregister', methods=['GET', 'POST'])
 def companyregister():
     form = RegisterForm()
     form.name.label = u'企业名称'
