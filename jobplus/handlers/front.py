@@ -36,8 +36,8 @@ def userregister():
 	if form.validate_on_submit():
 		form.create_user()
 		flash('注册成功，请登录！', 'success')
-        return redirect(url_for('.login'))
-    return render_template('userregister.html', form=form)
+		return redirect(url_for('.login'))
+	return render_template('userregister.html', form=form)
 
 
 @front.route('companyregister', methods=['GET', 'POST'])

@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin
+from flask_login import UserMixin, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -176,6 +176,7 @@ class Job(Base):
     salary_low = db.Column(db.Integer, nullable=False)
     salary_high = db.Column(db.Integer, nullable=False)
     location = db.Column(db.String(24))
+    description = db.Column(db.String(1500))
     # 职位标签，多个标签用逗号隔开，最多10个
     tags = db.Column(db.String(128))
     experience_requirement = db.Column(db.String(32))
@@ -193,6 +194,11 @@ class Job(Base):
     @property
     def tag_list(self):
         return self.tags.split(',')
+
+    @property
+    def current_user_is_applied(self):
+        d = Dilivery.query.filter_by(job_id=self.id, user_id=current_user.id).first()
+        return (d is not None)
 
 
 class Dilivery(Base):

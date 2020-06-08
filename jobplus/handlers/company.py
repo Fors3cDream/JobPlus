@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, flash, redirect, url_for, request
+from flask import Blueprint, render_template, flash, redirect, url_for, request, abort
 from flask_login import login_required, current_user
 from jobplus.forms import CompanyProfileForm
 from jobplus.models import User
@@ -17,6 +17,22 @@ def index():
         error_out=False
     )
     return render_template('company/index.html', pagination=pagination, active='company')
+
+
+@company.route('/<int:company_id>')
+def detail(company_id):
+    company = User.query.get_or_404(company_id)
+    if not company.is_company:
+        abort(404)
+    return render_template('company/detail.html', company=company, active='', panel='about')
+
+
+@company.route('/<int:company_id>/jobs')
+def company_jobs(company_id):
+    company = User.query.get_or_404(company_id)
+    if not company.is_company:
+        abort(404)
+    return render_template('company/detail.html', company=company, active='', panel='job')
 
 
 @company.route('/profile/', methods=['GET', 'POST'])
