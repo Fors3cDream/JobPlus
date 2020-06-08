@@ -56,6 +56,12 @@ class User(Base, UserMixin):
         return '<User:{}>'.format(self.name)
 
     @property
+    def enable_jobs(self):
+        if not self.is_company:
+            raise AttributeError('User has no attribute enable_jobs')
+        return self.jobs.filter(Job.is_disable.is_(False))
+
+    @property
     def password(self):
         return self._password
 
@@ -187,6 +193,7 @@ class Job(Base):
     company_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
     company = db.relationship('User', uselist=False, backref=db.backref('jobs', lazy='dynamic'))
     views_count = db.Column(db.Integer, default=0)
+    is_disable = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return '<Job {}>'.format(self.name)
@@ -197,11 +204,11 @@ class Job(Base):
 
     @property
     def current_user_is_applied(self):
-        d = Dilivery.query.filter_by(job_id=self.id, user_id=current_user.id).first()
+        d = Delivery.query.filter_by(job_id=self.id, user_id=current_user.id).first()
         return (d is not None)
 
 
-class Dilivery(Base):
+class Delivery(Base):
     __tablename__ = 'delivery'
 
     # 等待企业审核
@@ -214,6 +221,15 @@ class Dilivery(Base):
     id = db.Column(db.Integer, primary_key=True)
     job_id = db.Column(db.Integer, db.ForeignKey('job.id', ondelete='SET NULL'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='SET NULL'))
+    company_id = db.Column(db.Integer)
     status = db.Column(db.SmallInteger, default=STATUS_WAITING)
     # 企业回应
     response = db.Column(db.String(256))
+
+    @property
+    def user(self):
+        return User.query.get(self.user_id)
+
+    @property
+    def job(self):
+        return Job.query.get(self.job_id)

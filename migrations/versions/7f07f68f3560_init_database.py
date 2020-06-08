@@ -1,8 +1,8 @@
-"""add all data
+"""init database
 
-Revision ID: ed2d2c5d5575
+Revision ID: 7f07f68f3560
 Revises: 
-Create Date: 2020-06-08 16:19:04.092549
+Create Date: 2020-06-08 18:31:57.225951
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'ed2d2c5d5575'
+revision = '7f07f68f3560'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -70,6 +70,7 @@ def upgrade():
     sa.Column('is_open', sa.Boolean(), nullable=True),
     sa.Column('company_id', sa.Integer(), nullable=True),
     sa.Column('views_count', sa.Integer(), nullable=True),
+    sa.Column('is_disable', sa.Boolean(), nullable=True),
     sa.ForeignKeyConstraint(['company_id'], ['user.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id')
     )
@@ -87,6 +88,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('job_id', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
+    sa.Column('company_id', sa.Integer(), nullable=True),
     sa.Column('status', sa.SmallInteger(), nullable=True),
     sa.Column('response', sa.String(length=256), nullable=True),
     sa.ForeignKeyConstraint(['job_id'], ['job.id'], ondelete='SET NULL'),
